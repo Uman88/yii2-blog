@@ -77,10 +77,6 @@ class SiteController extends Controller
     {
         $model = new Registration();
 
-//        if($model->load(Yii::$app->request->post())){
-//            return $this->goBack();
-//        }
-
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             if ($user = $model->registration()) {
