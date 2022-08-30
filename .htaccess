@@ -1,0 +1,9 @@
+Options +FollowSymLinks
+IndexIgnore */*
+RewriteEngine on
+
+RewriteCond %{REQUEST_URI} ^/(admin)
+RewriteRule ^admin(\/?.*)$ web/$1 [L]
+
+RewriteCond %{REQUEST_URI} ^/
+RewriteRule ^(\/?.*)$ web/$1 [L]
