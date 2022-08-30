@@ -2,10 +2,13 @@
 
 namespace backend\controllers;
 
-use common\models\LoginForm;
+use common\models\Registration;
+use common\models\User;
 use Yii;
+use common\models\Login;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -24,7 +27,7 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'registration', 'error'],
                         'allow' => true,
                     ],
                     [
@@ -66,28 +69,54 @@ class SiteController extends Controller
     }
 
     /**
+     * Registration action
+     *
+     * @return string|Response
+     */
+    public function actionRegistration()
+    {
+        $model = new Registration();
+
+//        if($model->load(Yii::$app->request->post())){
+//            return $this->goBack();
+//        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            if ($user = $model->registration()) {
+                if ($user->status === User::STATUS_ACTIVE) {
+                    if (Yii::$app->getUser()->login($user)) {
+                        return $this->goHome();
+                    }
+                }
+            } else {
+                Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации');
+                Yii::error('Ошибка при регистрации');
+                return $this->refresh();
+            }
+        }
+
+        return $this->render('registration', ['model' => $model]);
+    }
+
+    /**
      * Login action.
      *
      * @return string|Response
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+//        if (!Yii::$app->user->isGuest) {
+//            return $this->goHome();
+//        }
+
+        $model = new Login();
+
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goHome();
         }
 
-        $this->layout = 'blank';
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-
-        $model->password = '';
-
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        return $this->render('login', ['model' => $model]);
     }
 
     /**
