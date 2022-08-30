@@ -4,7 +4,6 @@ namespace common\models;
 
 Use Yii;
 use yii\base\Model;
-use yii\helpers\VarDumper;
 
 /**
  * Registration form
