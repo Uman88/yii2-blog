@@ -12,30 +12,42 @@ use yii\web\IdentityInterface;
  * User model
  *
  * @property integer $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $verification_token
- * @property string $email
- * @property string $auth_key
+ * @property integer $role
  * @property integer $status
+ * @property string $name
+ * @property string $email
+ * @property string $password_hash write-only password
+ * @property string $auth_key
  * @property integer $created_at
  * @property integer $updated_at
- * @property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 2;
     const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 9;
-    const STATUS_ACTIVE = 10;
 
+    const ROLE_ADMIN = 1;
+    const ROLE_AUTHOR = 2;
+    const ROLE_USER = 3;
+
+    static $roles = [
+        self::ROLE_ADMIN => 'Администратор',
+        self::ROLE_AUTHOR => 'Автор',
+        self::ROLE_USER => 'Пользователь',
+    ];
+
+    /**
+     * @var
+     */
+    public $password;
 
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%user}}';
+        return '{{%users}}';
     }
 
     /**
@@ -54,9 +66,24 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            [['name', 'email', 'password'], 'filter', 'filter' => 'trim'],
+            [['name', 'email', 'status'], 'required'],
+            ['email', 'email'],
+            ['name', 'string', 'min' => 2, 'max' => 255],
+            ['password', 'required', 'on' => 'create'],
+            ['email', 'unique', 'message' => 'Эта почта занята']
         ];
+    }
+
+    /**
+     * @param $email
+     * @return User|null
+     */
+    public static function findByEmail($email)
+    {
+        return static::findOne([
+            'email' => $email
+        ]);
     }
 
     /**
@@ -81,9 +108,9 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername($username)
+    public static function findByUsername($name)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['name' => $name, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -110,7 +137,8 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $token verify email token
      * @return static|null
      */
-    public static function findByVerificationToken($token) {
+    public static function findByVerificationToken($token)
+    {
         return static::findOne([
             'verification_token' => $token,
             'status' => self::STATUS_INACTIVE
@@ -129,7 +157,7 @@ class User extends ActiveRecord implements IdentityInterface
             return false;
         }
 
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $timestamp = (int)substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
     }
