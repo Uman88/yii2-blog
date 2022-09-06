@@ -37,12 +37,10 @@ AppAsset::register($this);
             ],
         ]);
         $menuItems = [
-//        ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Главная', 'url' => ['/site/index']],
+            ['label' => 'Категории', 'url' => ['/category/index']],
+            ['label' => 'Посты', 'url' => ['/post/index']],
         ];
-        //    if (Yii::$app->user->isGuest) {
-        //        $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
-        //        $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/registration']];
-        //    }
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
             'items' => $menuItems,
