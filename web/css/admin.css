@@ -129,3 +129,20 @@ ul.gallery li {
     display: inline-block;
     list-style-type: none;
 }
+
+.big-check-line {
+    width: 100px;
+}
+
+.big-close-line {
+    width: 100px;
+}
+
+.remixicon-delete-image-edit {
+    display: flex;
+    position: absolute;
+    margin: -108px 0 0 188px;
+    font-size: 25px;
+    color: #ff0000;
+    font-weight: 500;
+}
