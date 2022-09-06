@@ -12,9 +12,8 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
-    ];
-    public $js = [
+        'css/admin.css',
+        'css/remixicon.css',
     ];
     public $depends = [
         'yii\web\YiiAsset',
