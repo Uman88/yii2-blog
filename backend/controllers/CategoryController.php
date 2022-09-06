@@ -2,10 +2,12 @@
 
 namespace backend\controllers;
 
+use backend\models\Post;
 use Yii;
 use Throwable;
 use backend\models\Category;
 use yii\data\ActiveDataProvider;
+use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -87,7 +89,10 @@ class CategoryController extends BehaviorsController
 
     /**
      * Finds id by category model based.
-     * If found category, delete category and redirect 'index' page.
+     * Also finds post 'category_id' => 'id' by category.
+     * Check post exist array, if yes then use foreach and make check.
+     * If array post empty, then delete category by id.
+     * If delete is successful, the browser will be redirected to the 'index' page.
      *
      * @param $id
      * @return yii\web\Response
@@ -97,12 +102,21 @@ class CategoryController extends BehaviorsController
      */
     public function actionDelete($id)
     {
-        $model = Category::findOne(['id' => $id]);
+        $category = Category::findOne(['id' => $id]);
+        $post = Post::find()->where(['category_id' => $id])->all();
 
-        if($model){
-            $this->findModel($model['id'])->delete();
+        if (count($post)) {
+            foreach ($post as $item) {
+                if ($item['category_id'] == $category['id']) {
+                    Yii::$app->session->setFlash('error', 'У данной категории есть прикрепленные посты!');
+                    $this->redirect('index');
+                }
+            }
+        } else {
+            $this->findModel($category['id'])->delete();
+            Yii::$app->session->setFlash('success', 'Категория удалена!');
         }
-        Yii::$app->session->setFlash('success', 'Категория удалена!');
+
         return $this->redirect(['index']);
     }
 
