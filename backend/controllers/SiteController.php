@@ -2,62 +2,17 @@
 
 namespace backend\controllers;
 
-use common\models\Registration;
-use common\models\User;
 use Yii;
-use common\models\Login;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\helpers\VarDumper;
-use yii\web\Controller;
 use yii\web\Response;
+use common\models\User;
+use common\models\Login;
+use common\models\Registration;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BehaviorsController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'actions' => ['login', 'registration', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => \yii\web\ErrorAction::class,
-            ],
-        ];
-    }
-
     /**
      * Displays homepage.
      *
@@ -102,10 +57,6 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-//        if (!Yii::$app->user->isGuest) {
-//            return $this->goHome();
-//        }
-
         $model = new Login();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
