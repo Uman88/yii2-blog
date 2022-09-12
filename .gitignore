@@ -39,3 +39,6 @@ phpunit.phar
 
 # ignore generated files
 # /web/index.php
+
+# ignore images in the folder uploads
+/web/uploads/
