@@ -1,52 +1,33 @@
 <?php
 
+use yii\helpers\Html;
+use yii\helpers\Url;
+use frontend\models\Post;
+
 /** @var yii\web\View $this */
+/** @var frontend\models\Post $model */
 
-$this->title = 'My Yii Application';
+Yii::$app->name = 'Yii2-Blog';
+$this->title = 'Blog';
 ?>
-<div class="site-index">
-    <div class="p-5 mb-4 bg-transparent rounded-3">
-        <div class="container-fluid py-5 text-center">
-            <h1 class="display-4">Congratulations!</h1>
-            <p class="fs-5 fw-light">You have successfully created your Yii-powered application.</p>
-            <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-        </div>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <?php foreach ($model as $post) : ?>
+        <div class="col">
+            <div class="card shadow-sm">
+                <?= Html::img('/web/uploads/' . Post::getTitleImage($post->img_id), ['height' => '225']); ?>
+                <div class="card-body">
+                    <p class="card-text"><?= Post::truncationString($post->title); ?></p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <i class="ri-user-3-line"></i> <?= $post->author ?>&nbsp;&nbsp;&nbsp;
+                            <i class="ri-eye-line"></i> <?= $post->viewed; ?>
+                        </div>
+                        <a class="btn btn-dark" href="<?= Url::to(['post/view', 'id' => $post->id]) ?>">Подробнее</a>
+                    </div>
+                </div>
             </div>
         </div>
-
+        <?php endforeach; ?>
     </div>
 </div>
