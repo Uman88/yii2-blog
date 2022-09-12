@@ -11,16 +11,6 @@ use yii\db\ActiveRecord;
 class Post extends ActiveRecord
 {
     /**
-     * Get post by active status
-     *
-     * @return array|ActiveRecord[]
-     */
-    public static function getAllPostByActiveStatus()
-    {
-        return self::find()->where(['status' => \backend\models\Post::STATUS_ACTIVE])->all();
-    }
-
-    /**
      * Get post by id
      *
      * @param $id
