@@ -12,6 +12,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $id
  * @property int $category_id
  * @property int $status
+ * @property int $viewed
  * @property string $title
  * @property string $description
  * @property string $content
@@ -50,7 +51,7 @@ class Post extends ActiveRecord
     {
         return [
             [['category_id', 'status', 'title', 'description', 'content', 'author'], 'required'],
-            [['category_id', 'status', 'img_id', 'created_at', 'updated_at'], 'integer'],
+            [['category_id', 'status', 'viewed', 'img_id', 'created_at', 'updated_at'], 'integer'],
             [['author', 'content'], 'string'],
             [['description'], 'string', 'max' => 255],
             [['author'], 'string', 'max' => 150],
@@ -67,6 +68,7 @@ class Post extends ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'category_id' => Yii::t('app', 'Категория'),
             'status' => Yii::t('app', 'Статус'),
+            'viewed' => Yii::t('app', 'Просмотры'),
             'title' => Yii::t('app', 'Заголовок'),
             'description' => Yii::t('app', 'Описание'),
             'content' => Yii::t('app', 'Контент'),
