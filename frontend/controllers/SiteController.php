@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use frontend\models\Post;
+use yii\data\Pagination;
 use yii\web\Controller;
 
 /**
@@ -11,14 +12,19 @@ use yii\web\Controller;
 class SiteController extends Controller
 {
     /**
-     * Displays homepage.
+     * Displays homepage
      *
-     * @return mixed
+     * @return string
      */
     public function actionIndex()
     {
-        $model = Post::getAllPostByActiveStatus();
+        $query = Post::find()->where(['status' => \backend\models\Post::STATUS_ACTIVE]);
+        $countQuery = clone $query;
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 10]);
+        $model = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
 
-        return $this->render('index', ['model' => $model]);
+        return $this->render('index', ['model' => $model, 'pages' => $pages]);
     }
 }
