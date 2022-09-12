@@ -1,9 +1,8 @@
-/******************/
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
 
 @font-face {
     font-family: AstroSpace;
-    src: url(fonts/AstroSpace.ttf);
+    src: url("../fonts/AstroSpace.ttf");
 }
 
 body {
@@ -42,7 +41,7 @@ header {
 
 .navlinks li {
     display: inline-block;
-    margin: 0px 20px;
+    margin: 0 20px;
 }
 
 .navlinks li a {
