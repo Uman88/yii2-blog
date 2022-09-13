@@ -6,8 +6,6 @@ use Yii;
 use backend\models\ObjectFile;
 use backend\models\Post;
 use yii\data\ActiveDataProvider;
-use yii\data\Pagination;
-use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
