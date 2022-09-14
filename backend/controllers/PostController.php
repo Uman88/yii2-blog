@@ -6,6 +6,7 @@ use Yii;
 use backend\models\ObjectFile;
 use backend\models\Post;
 use yii\data\ActiveDataProvider;
+use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
@@ -124,13 +125,24 @@ class PostController extends BehaviorsController
      * Deletes an existing Post model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
-     * @param int $id ID
+     * @param $id
      * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = Post::findOne(['id' => $id]);
+        $objectFile = ObjectFile::find()->where(['id' => $model->img_id])->one();
+
+        if ($objectFile) {
+            unlink(Yii::getAlias('@webroot') . '/uploads/' . $model->getTitleImage($id));
+            $objectFile->delete();
+            $this->findModel($id)->delete();
+        }
+
+        Yii::$app->session->setFlash('success', 'Новость удалена!');
 
         return $this->redirect(['index']);
     }
