@@ -1,6 +1,7 @@
 <?php
 
 /** @var \yii\web\View $this */
+
 /** @var string $content */
 
 use common\widgets\Alert;
@@ -33,11 +34,20 @@ AppAsset::register($this);
             <label for="check" class="menu-btn">
                 <i class="fas fa-bars"></i>
             </label>
-            <a href="/" class="logo">LOGO</a>
+            <a href="<?= Url::home(); ?>" class="logo">LOGO</a>
             <ul class="navlinks">
+                <?php if (!Yii::$app->user->isGuest) : ?>
+                    <li>
+                        <a href="<?= Url::to(['/admin']) ?>">Адмника</a>
+                    </li>
+                <?php endif; ?>
+                <li>
+                    <a href="<?= Url::home(); ?>">Главная</a>
+                </li>
                 <?php foreach ($category as $cat) : ?>
-                    <li><a href="<?= Url::to(['category/index', 'id' => $cat['id']]) ?>">
-                            <?= $cat['title']; ?></a></li>
+                    <li>
+                        <a href="<?= Url::to(['category/index', 'id' => $cat['id']]) ?>"><?= $cat['title']; ?></a>
+                    </li>
                 <?php endforeach; ?>
             </ul>
         </nav>
