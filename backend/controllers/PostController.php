@@ -139,8 +139,8 @@ class PostController extends BehaviorsController
         if ($objectFile) {
             unlink(Yii::getAlias('@webroot') . '/uploads/' . $model->getTitleImage($id));
             $objectFile->delete();
-            $this->findModel($id)->delete();
         }
+        $this->findModel($id)->delete();
 
         Yii::$app->session->setFlash('success', 'Новость удалена!');
 
