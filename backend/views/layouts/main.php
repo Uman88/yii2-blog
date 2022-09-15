@@ -1,6 +1,7 @@
 <?php
 
 /** @var \yii\web\View $this */
+
 /** @var string $content */
 
 use backend\assets\AppAsset;
@@ -41,10 +42,12 @@ AppAsset::register($this);
             ['label' => 'Категории', 'url' => ['/category/index']],
             ['label' => 'Посты', 'url' => ['/post/index']],
         ];
-        echo Nav::widget([
-            'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
-            'items' => $menuItems,
-        ]);
+        if (!Yii::$app->user->isGuest) {
+            echo Nav::widget([
+                'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
+                'items' => $menuItems,
+            ]);
+        }
         if (Yii::$app->user->isGuest) {
             echo Html::tag('div', Html::a('Войти', ['/site/login'], ['class' => ['btn btn-link text-decoration-none']]), ['class' => ['d-flex']]);
             echo Html::tag('div', Html::a('Регистрация', ['/site/registration'], ['class' => ['btn btn-link text-decoration-none']]), ['class' => ['d-flex']]);
