@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Изображение',
                 'attribute' => 'img_id',
                 'format' => 'raw',
-                'value' => !Post::getTitleImage($model->img_id) ? Html::img('@web/images/no-image.png', ['width' => '200']) : Html::img('@web/uploads/' . Post::getTitleImage($model->img_id), ['width' => '200']),
+                'value' => !Post::getTitleImage($model->id) ? Html::img('@web/images/no-image.png', ['width' => '200']) : Html::img('@web/uploads/' . Post::getTitleImage($model->id), ['width' => '200']),
             ],
             [
                 'attribute' => 'created_at',
