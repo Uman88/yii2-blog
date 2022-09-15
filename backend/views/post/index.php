@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'img_id',
                 'format' => 'raw',
                 'value' => function ($data) {
-                    return !Post::getTitleImage($data->img_id) ? Html::img('/web/images/no-image.png', ['width' => '100']) : Html::img('/web/uploads/' . Post::getTitleImage($data->img_id), ['width' => '150']);
+                    return !Post::getTitleImage($data->id) ? Html::img('/web/images/no-image.png', ['width' => '100']) : Html::img('/web/uploads/' . Post::getTitleImage($data->id), ['width' => '150']);
                 },
                 'options' => ['style' => 'width: 150px;'],
             ],
