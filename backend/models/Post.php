@@ -99,12 +99,13 @@ class Post extends ActiveRecord
      * Get title image
      *
      * @param $id
-     * @return mixed
+     * @return mixed|void|null
      */
     public static function getTitleImage($id)
     {
-        if ($id) {
-            return ObjectFile::find()->where(['id' => $id])->one()->title;
+        $objectFile = ObjectFile::find()->where(['item_id' => $id])->one();
+        if (isset($objectFile->title)) {
+            return $objectFile->title;
         }
     }
 
