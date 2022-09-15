@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Yii::$app->formatter->asDate($model['created_at'], 'php:Y-m-d H:i:s');?>&nbsp;&nbsp;&nbsp;
                 <i class="ri-eye-line"></i> <?= $getViewed['viewed']; ?>
             </h7>
-            <?= Html::img('/web/uploads/' . Post::getTitleImage($model->img_id)); ?>
+            <?= !Post::getTitleImage($model->img_id) ? Html::img('/web/images/no-image.png') : Html::img('/web/uploads/' . Post::getTitleImage($model->img_id), ['height' => '225']); ?>
             <div class="mt-3">
                 <p><?= $model->content ?></p>
 
