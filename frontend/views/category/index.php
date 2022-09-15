@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach ($model as $post) : ?>
             <div class="col">
                 <div class="card shadow-sm">
-                    <?= Html::img('/web/uploads/' . Post::getTitleImage($post->img_id), ['height' => '225']); ?>
+                    <?= !Post::getTitleImage($post->img_id) ? Html::img('/web/images/no-image.png', ['height' => '225']) : Html::img('/web/uploads/' . Post::getTitleImage($post->img_id), ['height' => '225']); ?>
                     <div class="card-body">
                         <p class="card-text"><?= Post::truncationString($post->title); ?></p>
                         <div class="d-flex justify-content-between align-items-center">
