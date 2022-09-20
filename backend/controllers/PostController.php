@@ -137,7 +137,7 @@ class PostController extends BehaviorsController
         $objectFile = ObjectFile::find()->where(['id' => $model->img_id])->one();
 
         if ($objectFile) {
-            unlink(Yii::getAlias('@webroot') . '/uploads/' . $model->getTitleImage($id));
+            unlink(Yii::getAlias('@webroot') . '/uploads/' . $model::getTitleImage($id));
             $objectFile->delete();
         }
         $this->findModel($id)->delete();
@@ -163,7 +163,7 @@ class PostController extends BehaviorsController
             $objectFile = ObjectFile::find()->where(['id' => $model->img_id])->one();
 
             if ($objectFile) {
-                unlink(Yii::getAlias('@webroot') . '/uploads/' . $model->getTitleImage($id));
+                unlink(Yii::getAlias('@webroot') . '/uploads/' . $model::getTitleImage($id));
                 $objectFile->delete();
                 $model->img_id = null;
                 $model->save();
